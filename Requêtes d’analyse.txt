@@ -1,0 +1,34 @@
+-- Top 10 chansons les plus écoutées
+SELECT title, plays
+FROM tracks
+ORDER BY plays DESC
+LIMIT 10;
+
+-- Playlists par utilisateur
+SELECT u.username, p.title AS playlist_name
+FROM users u
+JOIN playlists p ON u.id = p.user_id;
+
+-- Nombre de chansons par genre
+SELECT g.name AS genre, COUNT(t.id) AS total_tracks
+FROM genres g
+JOIN tracks t ON g.id = t.genre_id
+GROUP BY g.name;
+
+-- Nombre d'albums par artiste
+SELECT a.title AS artist, COUNT(al.id) AS total_albums
+FROM artists a
+JOIN albums al ON a.id = al.artist_id
+GROUP BY a.title;
+
+-- Nombre total de minutes écoutées par chanson
+SELECT title, (duration * plays / 60) AS total_minutes_listened
+FROM tracks
+ORDER BY total_minutes_listened DESC
+LIMIT 10;
+
+-- Nombre d’artistes par pays
+SELECT country, COUNT(*) AS total_artists
+FROM artists
+GROUP BY country
+ORDER BY total_artists DESC;

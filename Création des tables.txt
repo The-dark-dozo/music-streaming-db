@@ -1,0 +1,106 @@
+# Création des tables avec contraintes (PK, FK)
+
+
+				--- CREATION DE LA TABLE ALBUMS ---
+
+CREATE TABLE public.albums (
+    id SERIAL PRIMARY KEY,                                          -- Primary key auto-increment
+    artist_id INTEGER,                                               -- Artist ID (Foreign Key)
+    album_title VARCHAR(255),                                        -- Album title (character varying)
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- created_at with default CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- updated_at with default CURRENT_TIMESTAMP
+    CONSTRAINT fk_albums_artist FOREIGN KEY (artist_id) REFERENCES public.artists(id),  -- Foreign key referencing artists table
+    CONSTRAINT fk_tracks_album FOREIGN KEY (id) REFERENCES public.tracks(album_id)  -- Foreign key referencing tracks table
+);
+
+
+
+				--- CREATION DE LA TABLE artists --- 
+
+CREATE TABLE public.artists (
+    id SERIAL PRIMARY KEY,                      -- Primary key auto-increment
+    title VARCHAR(1023),                         -- Artist title (character varying)
+    description TEXT,                            -- Artist description
+    monthly_listeners INTEGER,                   -- Number of monthly listeners
+    favorite_track_id INTEGER,                   -- Favorite track ID (could be a foreign key, if required)
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,  -- created_at with default CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,  -- updated_at with default CURRENT_TIMESTAMP
+    country VARCHAR(100),                        -- Country of the artist (character varying)
+    CONSTRAINT fk_albums_artist FOREIGN KEY (id) REFERENCES public.albums(artist_id) -- Foreign key referencing albums table
+);
+
+
+				--- CREATION DE LA TABLE genre  ---
+
+CREATE TABLE public.genre (
+    id SERIAL PRIMARY KEY,                      -- Primary key auto-increment
+    name VARCHAR(50),                            -- Genre name (character varying)
+    description TEXT,                            -- Genre description (text)
+    CONSTRAINT fk_tracks_genre FOREIGN KEY (id) REFERENCES public.tracks(genre_id),  -- Foreign key referencing tracks table
+    CONSTRAINT tracks_genre_id_fkey FOREIGN KEY (id) REFERENCES public.tracks(genre_id)  -- Foreign key referencing tracks table
+);
+
+
+
+				--- CREATION DE LA TABLE playlists ---
+
+CREATE TABLE public.playlists (
+    id SERIAL PRIMARY KEY,                      -- Primary key auto-increment
+    title VARCHAR(255),                          -- Playlist title (character varying)
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,  -- created_at with default CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP   -- updated_at with default CURRENT_TIMESTAMP
+);
+
+
+				--- CREATION DE LA TABLE playlists_tracks --- 
+
+CREATE TABLE public.playlists_tracks (
+    playlists_id INTEGER,                                    -- Playlist ID (Foreign Key)
+    track_id INTEGER,                                         -- Track ID (Foreign Key)
+    track_position INTEGER,                                   -- Position of the track in the playlist
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,  -- created_at with default CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,  -- updated_at with default CURRENT_TIMESTAMP
+    PRIMARY KEY (playlists_id, track_id),                      -- Composite primary key
+    CONSTRAINT fk_pt_track FOREIGN KEY (track_id) REFERENCES public.tracks(id),  -- Foreign key referencing tracks table
+    CONSTRAINT fk_pt_playlist FOREIGN KEY (playlists_id) REFERENCES public.playlists(id)  -- Foreign key referencing playlists table
+);
+
+
+				--- CREATION DE LA TABLE tracks ---
+
+CREATE TABLE public.tracks (
+    id SERIAL PRIMARY KEY,                                        -- Primary key auto-increment
+    album_id INTEGER,                                              -- Foreign key for album
+    genre_id INTEGER,                                              -- Foreign key for genre
+    track_position INTEGER,                                        -- Position of the track (if needed)
+    track_title VARCHAR(255),                                       -- Title of the track
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- created_at with default CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- updated_at with default CURRENT_TIMESTAMP
+    CONSTRAINT fk_tracks_album FOREIGN KEY (album_id) REFERENCES public.albums(id),   -- Foreign key referencing albums table
+    CONSTRAINT fk_tracks_genre FOREIGN KEY (genre_id) REFERENCES public.genre(id),   -- Foreign key referencing genre table
+    CONSTRAINT tracks_genre_id_fkey FOREIGN KEY (genre_id) REFERENCES public.genre(id), -- Foreign key for genre (possibly redundant)
+    CONSTRAINT fk_pt_track FOREIGN KEY (id) REFERENCES public.playlists_tracks(track_id) -- Foreign key referencing playlists_tracks table
+);
+
+
+				--- CREATION DE LA TABLE USERS --- 
+
+CREATE TABLE public.users (
+    id SERIAL PRIMARY KEY,                                    -- Primary key auto-increment
+    username VARCHAR(255),                                     -- Username (character varying)
+    email VARCHAR(255),                                        -- Email address (character varying)
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP  -- created_at with default CURRENT_TIMESTAMP
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
