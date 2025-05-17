@@ -42,3 +42,12 @@ les albums, les genres, les playlists, etc.
 
 - PostgreSQL
 - SQL standard
+
+
+## 📌 Mise à jour 17/05/2025
+
+- Ajout de la table `listening_history` pour l’historique des morceaux écoutés.
+- Création de la table `subscriptions` pour gérer les abonnements.
+- Modification de la table user ajout d'une colonne subscription_id
+- Ajout de la table Comments
+- Ajout de la table recommandations

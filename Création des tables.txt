@@ -93,6 +93,60 @@ CREATE TABLE public.users (
 );
 
 
+## 📌 Mise à jour 17/05/2025
+
+- Ajout de la table `listening_history` pour l’historique des morceaux écoutés.
+- Création de la table `subscriptions` pour gérer les abonnements.
+- Modification de la table user ajout d'une colonne subscriptions.
+
+
+				--- Table listening_history ---
+
+CREATE TABLE listening_history (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    track_id INTEGER REFERENCES tracks(id) ON DELETE CASCADE,
+    listened_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+				--- Table subscriptions ---
+
+CREATE TABLE subscriptions (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,        -- ex: Free, Premium
+    price NUMERIC(6,2) DEFAULT 0.00,
+    max_devices INTEGER,
+    offline_mode BOOLEAN DEFAULT FALSE
+);
+
+
+				--- Associer les utilisateurs à un abonnement ---			 
+
+ALTER TABLE users
+ADD COLUMN subscription_id INTEGER REFERENCES subscriptions(id);
+
+
+				--- Table comments ---
+
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    track_id INTEGER REFERENCES tracks(id) ON DELETE CASCADE,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+				--- Table recommendations ---
+
+CREATE TABLE recommendations (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    recommended_track_id INTEGER REFERENCES tracks(id),
+    reason TEXT,
+    recommended_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 
 
