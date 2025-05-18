@@ -51,3 +51,10 @@ les albums, les genres, les playlists, etc.
 - Modification de la table user ajout d'une colonne subscription_id
 - Ajout de la table Comments
 - Ajout de la table recommandations
+
+## 📌 Mise à jour 18/05/2025
+
+- Mise à jour de la base de donnée table artist :
+Donnée ajouté avec l'API de spotify for Developpers
+
+
