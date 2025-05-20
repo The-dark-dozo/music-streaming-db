@@ -42,6 +42,8 @@ les albums, les genres, les playlists, etc.
 
 - PostgreSQL
 - SQL standard
+- Python
+- Postman
 
 
 ## 📌 Mise à jour 17/05/2025
